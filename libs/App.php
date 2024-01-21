@@ -55,6 +55,48 @@
                 return false;
             }
         }
+
+        // insert query
+        public function insert($query, $arr, $path)
+        {
+            if($this->validate($arr) == "empty") {
+                echo "<script>alert('one or more inputs are empty')</script>";
+            } else{
+                $insert_record = $this->link->prepare($query);
+                $insert_record->execute($arr);
+
+                header("location: ".$path."");
+            }
+        }
+
+        //update query
+        public function update($query, $arr, $path)
+        {
+            if($this->validate($arr) == "empty") {
+                echo "<script>alert('one or more inputs are empty')</script>";
+            } else{
+                $update_record = $this->link->prepare($query);
+                $update_record->execute($arr);
+
+                header("location: ".$path."");
+            }
+        }
+
+        // delete query
+        public function delete($query, $path)
+        {
+            $delete_record = $this->link->query($query);
+            $delete_record->execute(); 
+
+            header("location: ".$path."");
+        }
+
+        public function validate($arr)
+        {
+            if(in_array("", $arr)) {
+                return "empty";
+            }
+        }
     }
 
     $obj = new App;
