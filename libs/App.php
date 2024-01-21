@@ -1,4 +1,3 @@
-<?php require "../config/config.php"; ?>
 <?php
 
     class App {
@@ -97,6 +96,60 @@
                 return "empty";
             }
         }
-    }
 
-    $obj = new App;
+        
+        // register method
+        public function register($query, $arr, $path)
+        {
+            // Validate input parameters
+            if ($this->validate($arr) == "empty") {
+                echo "<script>alert('One or more inputs are empty')</script>";
+            } else {
+                try {
+                    // Prepare and execute the query
+                    $register_user = $this->link->prepare($query);
+                    $register_user->execute($arr);
+
+                    // Redirect upon successful registration
+                    header("location: " . $path);
+                    exit; // Ensure that no further code is executed after the header is sent
+                } catch (PDOException $e) {
+                    // Handle database errors
+                    echo "Database Error: " . $e->getMessage();
+                }
+            }
+        }
+
+
+        //login method
+        public function login($query, $data, $path)
+        {
+            $login_user = $this->link->query($query);
+            $login_user->execute();
+
+            $fetch = $login_user->fetch(PDO::FETCH_ASSOC);
+
+            if($login_user->rowCount() > 0) {
+                if(password_verify($data['password'], $fetch['password'])) {
+                    //Start session variables
+                    header("location :".$path."");
+                }
+            }
+        }
+
+        // Starting session
+        public function startingSession()
+        {
+            session_start();
+        }
+
+        // validating sessions
+        public function validateSession($path)
+        {
+            if(isset($_SESSION['id'])) {
+                header("location :".$path."");
+            }
+        }
+
+        
+    }
