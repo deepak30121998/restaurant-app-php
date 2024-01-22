@@ -6,6 +6,7 @@ require "../includes/header.php";
 
 // Create an instance of the App class
 $app = new App;
+$app->validateSession();
 
 // Handle form submission
 if(isset($_POST['submit'])) {

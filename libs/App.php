@@ -20,9 +20,9 @@
         {
             $this->link = new PDO("mysql:host=".$this->host.";dbname=".$this->dbname."",$this->user, $this->pass);
 
-            if($this->link) {
-                echo "db connection is working";
-            }
+            // if($this->link) {
+            //     echo "db connection is working";
+            // }
         }
 
         // Select All
@@ -122,20 +122,37 @@
 
 
         //login method
-        public function login($query, $data, $path)
+        public function login($query, $params, $path)
         {
-            $login_user = $this->link->query($query);
-            $login_user->execute();
+            try {
+                $stmt = $this->link->prepare($query);
+                $stmt->execute();
 
-            $fetch = $login_user->fetch(PDO::FETCH_ASSOC);
+                $fetch = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if($login_user->rowCount() > 0) {
-                if(password_verify($data['password'], $fetch['password'])) {
-                    //Start session variables
-                    header("location :".$path."");
+                if ($stmt->rowCount() > 0) {
+
+                    // Start session variables
+                    $_SESSION['email'] = $fetch['email'];
+                    $_SESSION['username'] = $fetch['username'];
+                    $_SESSION['user_id'] = $fetch['id'];
+                    
+                    // Verify password
+                    if (password_verify($params['password'], $fetch['password'])) {
+                        header("location: " . APPURL. "");
+                        exit(); 
+                    } else {
+                        echo "Incorrect password";
+                    }
+                } else {
+                    echo "User not found";
                 }
+            } catch (PDOException $e) {
+                // Handle database errors
+                echo "Error: " . $e->getMessage();
             }
         }
+
 
         // Starting session
         public function startingSession()
@@ -144,10 +161,10 @@
         }
 
         // validating sessions
-        public function validateSession($path)
+        public function validateSession()
         {
-            if(isset($_SESSION['id'])) {
-                header("location :".$path."");
+            if(isset($_SESSION['user_id'])) {
+                echo "<script>window.location.href='".APPURL."'</script>";
             }
         }
 
