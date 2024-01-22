@@ -64,8 +64,18 @@
                 $insert_record = $this->link->prepare($query);
                 $insert_record->execute($arr);
 
-                header("location: ".$path."");
+                echo "<script>window.location.href='".$path."'</script>";
             }
+        }
+
+        // validating Cart
+        public function validateCart($q)
+        {
+            $row = $this->link->query($q);
+            $row->execute();
+
+            $count = $row->rowCount();
+            return $count;
         }
 
         //update query
@@ -87,7 +97,7 @@
             $delete_record = $this->link->query($query);
             $delete_record->execute(); 
 
-            header("location: ".$path."");
+            echo "<script>window.location.href='".$path."'</script>";
         }
 
         public function validate($arr)
