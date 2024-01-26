@@ -47,7 +47,7 @@
                 </tr>
             </thead>
             <tbody>
-
+                <?php if($cart_price->total_price > 0): ?>
                 <?php foreach ($cart_items as $cart_item) : ?>
                     <tr>
                         <th><img src="<?php echo APPURL; ?>/img/<?php echo $cart_item->image; ?>" style="width: 50px; height: 50px;"></th>
@@ -56,6 +56,9 @@
                         <td><a class="btn btn-danger text-white" href="<?php echo APPURL; ?>/food/delete-item.php?id=<?php echo $cart_item->id; ?>">delete</td>
                     </tr>
                 <?php endforeach; ?>
+                <?php else: ?>
+                    <p>Cart is empty add some food items</p>
+                <?php endif; ?>
             </tbody>
         </table>
         <div class="position-relative mx-auto" style="max-width: 400px; padding-left: 679px;">

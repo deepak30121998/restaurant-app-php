@@ -37,6 +37,8 @@
             $redirectPath = "cart.php";
             $app->insert($query, $params, $redirectPath);
         }
+    }else {
+        echo "<script>window.location.href='".APPURL."/404.php'</script>";
     }
     
 ?>

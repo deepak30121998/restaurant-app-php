@@ -68,7 +68,7 @@
                         <a href="contact.html" class="nav-item nav-link">Contact</a>
                         
                         <?php if(isset($_SESSION['username'])): ?>
-                        <a href="cart.html" class="nav-item nav-link"><i class="fa-sharp fa-solid fa-cart-shopping"></i>Cart</a>
+                        <a href="<?php echo APPURL; ?>/food/cart.php" class="nav-item nav-link"><i class="fa-sharp fa-solid fa-cart-shopping"></i>Cart</a>
 
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
